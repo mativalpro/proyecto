@@ -1,5 +1,6 @@
 import random
 import pyttsx3
+
 def hablar(texto):
     voz = pyttsx3.init()
     print(texto)
