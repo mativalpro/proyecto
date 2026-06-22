@@ -59,3 +59,40 @@ tablero_ia = crear_tablero()
 colocar_barcos_ia(tablero_ia)
 
 
+barcos_colocados = 0
+
+while barcos_colocados < BARCOS:
+
+    fila = int(input("Ingrese fila: "))
+    columna = int(input("Ingrese columna: "))
+
+    if tablero_jugador[fila][columna] == 0:
+
+        tablero_jugador[fila][columna] = 1
+        barcos_colocados += 1
+
+        print("Barco colocado")
+
+
+turno = True
+juego_activo = True
+
+
+while juego_activo:
+
+    if turno:
+
+        fila = int(input("Fila ataque: "))
+        columna = int(input("Columna ataque: "))
+
+        if tablero_ia[fila][columna] == 1:
+
+            tablero_ia[fila][columna] = 2
+            print("Impacto")
+
+        elif tablero_ia[fila][columna] == 0:
+
+            tablero_ia[fila][columna] = 4
+            print("Agua")
+
+        turno = False
