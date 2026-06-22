@@ -96,3 +96,31 @@ while juego_activo:
             print("Agua")
 
         turno = False
+
+    else:
+
+        fila = random.randint(0, TAM - 1)
+        columna = random.randint(0, TAM - 1)
+
+        if tablero_jugador[fila][columna] == 1:
+
+            tablero_jugador[fila][columna] = 3
+            print("La IA impactó")
+
+        elif tablero_jugador[fila][columna] == 0:
+
+            tablero_jugador[fila][columna] = 4
+            print("La IA falló")
+
+        turno = True
+
+    resultado = ganador(
+        tablero_jugador,
+        tablero_ia
+    )
+
+    if resultado is not None:
+
+        print("Ganador:", resultado)
+
+        juego_activo = False
