@@ -58,21 +58,30 @@ tablero_ia = crear_tablero()
 
 colocar_barcos_ia(tablero_ia)
 
+from flask import Flask, request, jsonify
 
+app = Flask(__name__)
 barcos_colocados = 0
 
-while barcos_colocados < BARCOS:
+@app.route("/colocar_barco", methods=["POST"])
+def colocar_barco():
 
-    fila = int(input("Ingrese fila: "))
-    columna = int(input("Ingrese columna: "))
+    datos = request.get_json()
+
+    fila = datos["fila"]
+    columna = datos["columna"]
 
     if tablero_jugador[fila][columna] == 0:
 
         tablero_jugador[fila][columna] = 1
-        barcos_colocados += 1
 
-        print("Barco colocado")
+        return jsonify({
+            "resultado": "colocado"
+        })
 
+    return jsonify({
+        "resultado": "ocupado"
+    })
 
 turno = True
 juego_activo = True
