@@ -1,4 +1,7 @@
+from flask import Flask, request, jsonify
 import random
+
+app = Flask(__name__)
 
 TAM = 5
 BARCOS = 5
@@ -52,24 +55,22 @@ def colocar_barcos_ia(tablero):
             barcos_colocados += 1
 
 
+# Crear tableros
 tablero_jugador = crear_tablero()
 tablero_ia = crear_tablero()
 
-
+# Barcos IA
 colocar_barcos_ia(tablero_ia)
 
-from flask import Flask, request, jsonify
 
-app = Flask(__name__)
-barcos_colocados = 0
-
+# Colocar barcos jugador
 @app.route("/colocar_barco", methods=["POST"])
 def colocar_barco():
 
     datos = request.get_json()
 
-    fila = datos["fila"]
-    columna = datos["columna"]
+    fila = int(datos["fila"])
+    columna = int(datos["columna"])
 
     if tablero_jugador[fila][columna] == 0:
 
@@ -83,53 +84,9 @@ def colocar_barco():
         "resultado": "ocupado"
     })
 
-turno = True
-juego_activo = True
 
 
-while juego_activo:
 
-    if turno:
 
-        fila = int(input("Fila ataque: "))
-        columna = int(input("Columna ataque: "))
-
-        if tablero_ia[fila][columna] == 1:
-
-            tablero_ia[fila][columna] = 2
-            print("Impacto")
-
-        elif tablero_ia[fila][columna] == 0:
-
-            tablero_ia[fila][columna] = 4
-            print("Agua")
-
-        turno = False
-
-    else:
-
-        fila = random.randint(0, TAM - 1)
-        columna = random.randint(0, TAM - 1)
-
-        if tablero_jugador[fila][columna] == 1:
-
-            tablero_jugador[fila][columna] = 3
-            print("La IA impactó")
-
-        elif tablero_jugador[fila][columna] == 0:
-
-            tablero_jugador[fila][columna] = 4
-            print("La IA falló")
-
-        turno = True
-
-    resultado = ganador(
-        tablero_jugador,
-        tablero_ia
-    )
-
-    if resultado is not None:
-
-        print("Ganador:", resultado)
-
-        juego_activo = False
+if __name__ == "__main__":
+    app.run(debug=True)
