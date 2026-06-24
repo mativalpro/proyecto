@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import random
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="batalla_naval")
 
 TAM = 5
 BARCOS = 5
@@ -64,7 +64,16 @@ tablero_ia = crear_tablero()
 colocar_barcos_ia(tablero_ia)
 
 
-# Colocar barcos jugador
+@app.route("/")
+def index():
+    return send_from_directory(app.static_folder, "diseño.html")
+
+
+@app.route("/<path:filename>")
+def archivos_estaticos(filename):
+    return send_from_directory(app.static_folder, filename)
+
+
 @app.route("/colocar_barco", methods=["POST"])
 def colocar_barco():
 
@@ -86,6 +95,15 @@ def colocar_barco():
     return jsonify({
         "resultado": "ocupado"
     })
+
+
+@app.route("/reiniciar", methods=["POST"])
+def reiniciar():
+    global tablero_jugador, tablero_ia
+    tablero_jugador = crear_tablero()
+    tablero_ia = crear_tablero()
+    colocar_barcos_ia(tablero_ia)
+    return jsonify({"reiniciado": True})
 
 
 # Disparo jugador
