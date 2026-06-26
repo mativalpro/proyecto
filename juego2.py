@@ -79,3 +79,14 @@ for linea in archivo:
         palabras.append(palabra_limpia.lower())
 
 archivo.close()
+
+
+# Seleccionar una palabra al azar usando random.randint
+indice_aleatorio = random.randint(0, len(palabras) - 1)
+palabra_secreta = palabras[indice_aleatorio]
+
+# Variables de control del juego
+letras_adivinadas = []
+errores = 0
+max_errores = len(AHORCADO_DIBUJOS) - 1
+
